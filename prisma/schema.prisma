@@ -6,6 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
+
+  //for searching we use below line
+  // ye likhne k baad npx prisma generate bhi run krna
+  previewFeatures = ["fullTextSearch"]
+  ////
 }
 
 datasource db {
@@ -18,5 +23,36 @@ model User{
   name String ?
   email String @unique
   password String ?
+  comment Comment[]
+  post Post[]
+  created_at DateTime @default(now())
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  user User @relation(fields  : [user_id] , references : [id] , onDelete: Cascade)
+  // cascade jese hi user delete post delete
+  comment Comment[]
+  user_id Int
+  title String
+  description String
+  comment_count Int @default(0)
+  created_at DateTime @default(now())
+}
+
+model Comment {
+  id String @id @default(uuid())
+  post Post @relation(fields  : [post_id] , references : [id] , onDelete: Cascade)
+  //This specifies the name of the relation field (post) and the related model (Post).
+////It means that the current model (where this relation is defined) has a foreign key relationship with the Post model.
+//The @relation attribute explicitly defines the relationship between models. It includes:
+//fields: [post_id]
+// This tells Prisma that the foreign key column in the current model is post_id.
+// In the database, this column will store the ID of the related Post record
+// id to vhi post ki id hogi 
+  post_id Int
+  user User @relation(fields  : [user_id] , references : [id] , onDelete: Cascade)
+  user_id Int
+  comment String
   created_at DateTime @default(now())
 }

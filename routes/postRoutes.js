@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { createPost , updatePost , postdata , showPost , deletePost , searchpost } from "../controller/PostController.js";
+const router = Router() ;
+router.get("/", postdata) ;
+router.get("/search", searchpost) ;
+router.post("/", createPost) ;
+router.get("/:id", showPost) ;
+router.put("/:id", updatePost) ;
+router.delete("/:id",deletePost) ;
+export default router ;
